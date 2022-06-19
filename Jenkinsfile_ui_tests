@@ -46,6 +46,7 @@ pipeline {
 def deploy(String environment) {
     try {
         echo "Deployment on ${environment} environment triggered..."
+        echo "${params.URL}"
         sh 'sh send_notification.sh' environment 0 params.URL
     }
     catch (err) {
