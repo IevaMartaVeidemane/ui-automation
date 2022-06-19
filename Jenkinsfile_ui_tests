@@ -67,4 +67,5 @@ def test(String environment) {
         sh 'docker-compose down'
         sh 'sh send_notification.sh' environment 1 params.URL
     throw err
+    }
 }
