@@ -1,0 +1,70 @@
+pipeline {
+    agent any
+    parameters {
+        string(name: 'URL', description: 'Where to send discord notification')
+    }
+    triggers {
+        pollSCM('*/1 * * * *')
+    }
+    stages {
+        stage('build') {
+            steps {
+                echo "Building application"
+            }
+        }
+        stage('deploy-stg') {
+            steps {
+                script {
+                    deploy("STAGING")
+                }
+            }
+        }
+        stage('test-stg') {
+            steps {
+                script {
+                    test("STAGING")
+                }
+            }
+        }
+        stage('deploy-prod') {
+            steps {
+                script {
+                    deploy("PROD")
+                }
+            }
+        }
+        stage('test-prod') {
+            steps {
+                script {
+                    test("PROD")
+                }
+            }
+        }
+    }
+}
+
+def deploy(String environment) {
+    try {
+        echo "Deployment on ${environment} environment triggered..."
+        sh 'sh send_notification.sh' environment 0 params.URL
+    }
+    catch (err) {
+        echo "Deployment FAILED on ${environment} environment"
+        sh 'sh send_notification.sh' environment 1 params.URL
+    throw err
+  }
+
+}
+
+def test(String environment) {
+    echo "Running tests on ${environment} environment..."
+    try {
+        sh 'docker-compose up'
+        sh 'sh send_notification.sh' environment 0 params.URL
+        }
+    catch (err) {
+        echo "Tests FAILED on ${environment} environment"
+        sh 'docker-compose down'
+        sh 'sh send_notification.sh' environment 1 params.URL
+    throw err
+}
