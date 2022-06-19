@@ -9,7 +9,7 @@ echo $STATUS
 
 # Default message
 MESSAGE=""$COMPONENT" failed :no_entry:"
-if [ $STATUS = 0 ]; then
+if [ $STATUS == 0 ]; then
     MESSAGE=""$COMPONENT" passed :white_check_mark:"
 fi
 
