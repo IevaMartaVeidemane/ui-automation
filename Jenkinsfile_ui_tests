@@ -46,12 +46,11 @@ pipeline {
 def deploy(String environment) {
     try {
         echo "Deployment on ${environment} environment triggered..."
-        echo "${params.URL}"
-        sh 'sh send_notification.sh' environment 0
+        sh 'sh send_notification.sh' "${environment}" 0
     }
     catch (err) {
         echo "Deployment FAILED on ${environment} environment"
-        sh 'sh send_notification.sh' environment 1
+        sh 'sh send_notification.sh' "${environment}" 1
     throw err
   }
 
@@ -61,12 +60,12 @@ def test(String environment) {
     echo "Running tests on ${environment} environment..."
     try {
         sh 'docker-compose up'
-        sh 'sh send_notification.sh' environment 0
+        sh 'sh send_notification.sh' "${environment}" 0
         }
     catch (err) {
         echo "Tests FAILED on ${environment} environment"
         sh 'docker-compose down'
-        sh 'sh send_notification.sh' environment 1
+        sh 'sh send_notification.sh' "${environment}" 1
     throw err
     }
 }
