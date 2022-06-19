@@ -13,6 +13,11 @@ if [ $STATUS = 0 ]; then
     MESSAGE=""$COMPONENT" passed :white_check_mark:"
 fi
 
+# remove double qoutes
+temp="${LINK%\"}"
+temp="${LINK#\"}"
+echo "$LINK"
+
 # Send notification
 curl -X POST \
   "$LINK" \
