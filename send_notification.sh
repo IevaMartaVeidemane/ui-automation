@@ -14,9 +14,7 @@ if [ $STATUS = 0 ]; then
 fi
 
 # remove double qoutes
-temp="${LINK%\"}"
-temp="${LINK#\"}"
-echo "$LINK"
+ echo "$LINK" | tr -d '"'
 
 # Send notification
 curl -X POST \
