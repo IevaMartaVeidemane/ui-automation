@@ -1,8 +1,8 @@
 pipeline {
     agent any
-    // parameters {
-    //     string(name: 'URL', description: 'Where to send discord notification')
-    // }
+    parameters {
+        string(name: 'URL', defaultValue: 'https://discord.com/api/webhooks/988117458915295252/A1kEyUiRsoXL-0BfZnblq8jQB7rV5l7i3sYCu4auDE58ajN0rZ-MW8VtZ8uBeFbkoqO_', description: 'Where to send discord notification')
+    }
     triggers {
         pollSCM('*/1 * * * *')
     }
@@ -46,7 +46,7 @@ pipeline {
 def deploy(String environment) {
     try {
         echo "Deployment on ${environment} environment triggered..."
-        sh "sh send_notification.sh ${environment} 0"
+        sh "sh send_notification.sh ${environment} 0 ${params.URL}"
     }
     catch (err) {
         echo "Deployment FAILED on ${environment} environment"
