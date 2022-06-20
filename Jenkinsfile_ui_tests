@@ -46,8 +46,7 @@ pipeline {
 def deploy(String environment) {
     try {
         echo "Deployment on ${environment} environment triggered..."
-        echo environment
-        sh 'sh send_notification.sh environment 0'
+        sh "sh send_notification.sh ${environment} 0"
     }
     catch (err) {
         echo "Deployment FAILED on ${environment} environment"
