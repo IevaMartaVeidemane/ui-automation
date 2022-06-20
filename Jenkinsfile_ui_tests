@@ -50,7 +50,7 @@ def deploy(String environment) {
     }
     catch (err) {
         echo "Deployment FAILED on ${environment} environment"
-        // sh 'sh send_notification.sh' "${environment}" 1
+        sh "sh send_notification.sh ${environment} 1 ${params.URL}"
     throw err
   }
 
@@ -60,11 +60,11 @@ def test(String environment) {
     echo "Running tests on ${environment} environment..."
     try {
         sh 'docker-compose up --abort-on-container-exit'
-        // sh 'sh send_notification.sh' "${environment}" 0
+        sh "sh send_notification.sh ${environment} 0 ${params.URL}"
         }
     catch (err) {
         echo "Tests FAILED on ${environment} environment"
-        // sh 'sh send_notification.sh' "${environment}" 1
+        sh "sh send_notification.sh ${environment} 1 ${params.URL}"
     throw err
     }
 }
